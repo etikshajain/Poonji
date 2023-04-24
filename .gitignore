@@ -1,0 +1,13 @@
+# dependencies
+/frontend/Ciseco_Nextjs/CisecoNextjs/node_modules
+
+# build folder
+/frontend/Ciseco_Nextjs/CisecoNextjs/.next
+/frontend/Ciseco_Nextjs/CisecoNextjs/.vscode
+
+# local env files
+.env
+.env*.local
+
+# local test
+/test

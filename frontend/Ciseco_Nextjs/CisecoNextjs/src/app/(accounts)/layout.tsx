@@ -19,7 +19,7 @@ const pages: {
     link: "/account",
   },
   {
-    name: "Save lists",
+    name: "Lent Loans",
     link: "/account-savelists",
   },
   {

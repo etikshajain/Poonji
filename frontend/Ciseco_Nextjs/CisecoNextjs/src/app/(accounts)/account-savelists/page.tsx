@@ -8,7 +8,7 @@ const AccountSavelists = () => {
       <div className="space-y-10 sm:space-y-12">
         <div>
           <h2 className="text-2xl sm:text-3xl font-semibold">
-            List of saved products
+            List of Lent Loans
           </h2>
         </div>
 
