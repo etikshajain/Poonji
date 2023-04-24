@@ -87,42 +87,4 @@ export class AuthService {
       return 1;
     }
   }
-
-  async requestEmailOTP(user_id: string) {
-    const user = await this.userModel.findById(user_id);
-    if (!user) return -1;
-    if (user.isVerified) return -2;
-    if (!user.otp) {
-      user.otp = generateOTP();
-      await user.save();
-    }
-    return sendOTP(user.email, user.name, user.otp);
-  }
-
-  async verifyEmailOTP(user_id: string, otp: string) {
-    const user = await this.userModel.findById(user_id);
-    if (!user) return -1;
-    if (user.isVerified) return -2;
-    if (user.otp !== otp) return -3;
-
-    user.otp = null;
-    user.isVerified = true;
-    user.isIITD = user.email.toLowerCase().split('@')[1] === 'iitd.ac.in';
-
-    const vip = await this.vipModel
-      .findOne({ email: user.email })
-      .select('role')
-      .lean();
-    if (vip) {
-      if (vip.role === 'INVITEE') user.isInvitee = true;
-      if (vip.role === 'STAFF') user.isIITDStaff = true;
-      if (vip.role === 'FACULTY') user.isIITDFaculty = true;
-      if (vip.role === 'IITDVIP') user.isIITDVIP = true;
-    } else {
-      const kerberos = user.email.toLowerCase().split('@')[0];
-      if (user.isIITD && kerberos.search(/\d/) === -1)
-        user.isIITDFaculty = true;
-    }
-    return user.save();
-  }
 }

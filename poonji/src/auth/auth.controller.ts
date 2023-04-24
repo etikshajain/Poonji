@@ -66,25 +66,15 @@ export class AuthController {
 
   // @Throttle(5, 300)
   @UseGuards(UserAuthGuard)
-  @Get('requestEmailOTP')
+  @Get('requestKYCVerification')
   async requestEmailOTP(@Req() req: express.Request) {
-    const user_id: string = req.user['id'];
-    const r = await this.authService.requestEmailOTP(user_id);
-    if (r === -1) throw new UnauthorizedException('User not found');
-    if (r === -2) throw new BadRequestException('Already Verified');
-    return r;
+    
   }
 
   // @Throttle(5, 60)
   @UseGuards(UserAuthGuard)
-  @Post('verifyEmailOTP')
+  @Post('verifyKYC')
   async verifyEmailOTP(@Req() req: express.Request) {
-    const user_id: string = req.user['id'];
-    const otp: string = req.body.otp;
-    const r = await this.authService.verifyEmailOTP(user_id, otp);
-    if (r === -1) throw new UnauthorizedException('User not found');
-    if (r === -2) throw new BadRequestException('Already Verified');
-    if (r === -3) throw new ForbiddenException('Wrong OTP');
-    return r;
+    
   }
 }
