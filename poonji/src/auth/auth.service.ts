@@ -5,38 +5,40 @@ import { User, UserDocument } from 'src/schemas/user.schema';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import CONFIG from 'src/utils/config';
+import { generate_RDVID, generateOTP, generatePassword } from 'src/utils/rdv';
+import { sendRDV, sendOTP, sendPass } from 'src/utils/mail';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectModel(User.name) private userModel: Model<UserDocument>,
-    @InjectModel(VIP.name) private vipModel: Model<VIPDocument>,
     private jwtService: JwtService,
   ) {}
 
   async createUser(
     name: string,
-    college: string,
     email: string,
     phone: string,
     password: string,
+    upi_id: string
   ) {
     email = email.trim().toLowerCase();
     const u = await this.userModel.findOne({ email: email });
     if (u) return 1;
 
     const hash = await bcrypt.hash(password, Number(CONFIG.BCRYPT_ROUNDS));
+    const user_id = generate_RDVID(name);
     // TODO: any validation on frontend?
-    const rdv_id = generate_RDVID(name);
     const user = new this.userModel({
       name: name,
-      college: college,
       email: email,
       phone: phone,
       password_hash: hash,
-      rdv_id: rdv_id,
+      upi_id: upi_id,
+      user_id: user_id,
+      isKYCVerified: false,
+      credibility_score: 0
     });
-    // await sendRDV(email, name, phone, rdv_id);
     return user.save();
   }
 
@@ -48,15 +50,10 @@ export class AuthService {
         name: user.name,
         email: user.email,
         phone: user.phone,
-        college: user.college,
-        rdv_id: user.rdv_id,
-        referral_points: user.referral_points,
-        isIITD: user.isIITD,
-        isIITDFaculty: user.isIITDFaculty,
-        isIITDStaff: user.isIITDStaff,
-        isIITDVIP: user.isIITDVIP,
-        isInvitee: user.isInvitee,
-        isVerified: user.isVerified,
+        upi_id: user.upi_id,
+        user_id: user.user_id,
+        isKYCVerified: user.isKYCVerified,
+        credibility_score: user.credibility_score
       };
       return payload;
     }
@@ -70,14 +67,10 @@ export class AuthService {
       email: user.email,
       phone: user.phone,
       college: user.college,
-      rdv_id: user.rdv_id,
-      referral_points: user.referral_points,
-      isIITD: user.isIITD,
-      isIITDFaculty: user.isIITDFaculty,
-      isIITDStaff: user.isIITDStaff,
-      isIITDVIP: user.isIITDVIP,
-      isInvitee: user.isInvitee,
-      isVerified: user.isVerified,
+      upi_id: user.upi_id,
+      user_id: user.user_id,
+      isKYCVerified: user.isKYCVerified,
+      credibility_score: user.credibility_score
     };
     return { access_token: this.jwtService.sign(payload) };
   }

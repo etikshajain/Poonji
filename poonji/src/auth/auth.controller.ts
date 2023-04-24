@@ -25,13 +25,13 @@ export class AuthController {
   // @Throttle(5, 60)
   @Post('createUser')
   async createUser(@Body() _body) {
-    const { name, college, email, phone, password } = _body;
+    const { name, email, phone, password, upi_id } = _body;
     const u = await this.authService.createUser(
       name,
-      college,
       email,
       phone,
       password,
+      upi_id
     );
     if (u === 1) {
       throw new BadRequestException('Email already exists');
