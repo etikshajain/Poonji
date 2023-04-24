@@ -5,9 +5,6 @@ import { User, UserDocument } from 'src/schemas/user.schema';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import CONFIG from 'src/utils/config';
-import { generate_RDVID, generateOTP, generatePassword } from 'src/utils/rdv';
-import { sendRDV, sendOTP, sendPass } from 'src/utils/mail';
-import { VIP, VIPDocument } from 'src/schemas/vip.schema';
 
 @Injectable()
 export class AuthService {
