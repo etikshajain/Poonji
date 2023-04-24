@@ -34,4 +34,18 @@ export class P2pController {
         const id = req['user'].id;
         return this.p2pService.giveLoan(id, loan_id);
     }
+
+    @Post('returnLoan')
+    async returnLoan(@Body() body, @Req() req: Express.Request) {
+        const { loan_id } = body;
+        const id = req['user'].id;
+        return this.p2pService.returnLoan(id, loan_id);
+    }
+
+    @Post('claimReturn')
+    async claimReturn(@Body() body, @Req() req: Express.Request) {
+        const { loan_id } = body;
+        const id = req['user'].id;
+        return this.p2pService.claimReturn(id, loan_id);
+    }
 }

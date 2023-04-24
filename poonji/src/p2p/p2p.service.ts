@@ -44,6 +44,22 @@ export class P2pService {
         return loan.save();
     }
 
+    async returnLoan(loan_id) {
+        const loan = await this.loanModel.findById(loan_id).populate('borrower lender');
+        const upi = loan.borrower.upi_id;
+        // todo: transfer money
+        loan.status = 'returned';
+        return loan.save();
+    }
+
+    async claimReturn(loan_id) {
+        const loan = await this.loanModel.findById(loan_id).populate('borrower lender');
+        const upi = loan.lender.upi_id;
+        // todo: transfer money
+        loan.status = 'closed';
+        return loan.save();
+    }
+
     async getLoans(status: string|null, borrower: string|null, lender: string|null) {
         if (status) {
             return this.loanModel.find({status: status});

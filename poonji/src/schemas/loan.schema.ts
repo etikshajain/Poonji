@@ -18,7 +18,7 @@ export class Loan {
   amount:Number;
 
   @Prop({required: true, unique: false  })
-  status:string;
+  status:string; //requested given claimed returned cloased
 }
 
 export type LoanDocument = Loan & Document;
