@@ -5,6 +5,7 @@ import {
   ForbiddenException,
   Get,
   NotFoundException,
+  NotImplementedException,
   Post,
   Query,
   Req,
@@ -43,38 +44,38 @@ export class AuthController {
   @UseGuards(UserLocalGuard)
   @Post('loginUser')
   async loginUser(@Req() req: express.Request) {
-    return this.authService.loginUser(req.user);
+    return this.authService.loginUser(req['user']);
   }
 
   @UseGuards(UserAuthGuard)
   @Get('userProfile')
   async userProfile(@Req() req: express.Request) {
-    return req.user;
+    return req['user'];
   }
 
-  // @Throttle(5, 60)
-  @Get('userForgotPassword')
-  async userForgotPassword(@Query() query) {
-    const { email } = query;
-    const result = await this.authService.userForgotPassword(email);
-    if (result === 0) {
-      throw new NotFoundException('Email not found, please create new account');
-    } else {
-      return 'Please check your email for the new password';
-    }
-  }
+  // // @Throttle(5, 60)
+  // @Get('userForgotPassword')
+  // async userForgotPassword(@Query() query) {
+  //   const { email } = query;
+  //   const result = await this.authService.userForgotPassword(email);
+  //   if (result === 0) {
+  //     throw new NotFoundException('Email not found, please create new account');
+  //   } else {
+  //     return 'Please check your email for the new password';
+  //   }
+  // }
 
   // @Throttle(5, 300)
   @UseGuards(UserAuthGuard)
   @Get('requestKYCVerification')
   async requestEmailOTP(@Req() req: express.Request) {
-    
+    throw new NotImplementedException();
   }
 
   // @Throttle(5, 60)
   @UseGuards(UserAuthGuard)
   @Post('verifyKYC')
   async verifyEmailOTP(@Req() req: express.Request) {
-    
+    throw new NotImplementedException();
   }
 }

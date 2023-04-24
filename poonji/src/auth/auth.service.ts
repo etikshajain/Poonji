@@ -5,8 +5,7 @@ import { User, UserDocument } from 'src/schemas/user.schema';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import CONFIG from 'src/utils/config';
-import { generate_RDVID, generateOTP, generatePassword } from 'src/utils/rdv';
-import { sendRDV, sendOTP, sendPass } from 'src/utils/mail';
+import { generate_user } from 'src/utils/misc';
 
 @Injectable()
 export class AuthService {
@@ -27,7 +26,7 @@ export class AuthService {
     if (u) return 1;
 
     const hash = await bcrypt.hash(password, Number(CONFIG.BCRYPT_ROUNDS));
-    const user_id = generate_RDVID(name);
+    const user_id = generate_user();
     // TODO: any validation on frontend?
     const user = new this.userModel({
       name: name,
@@ -49,7 +48,6 @@ export class AuthService {
         id: user.id,
         name: user.name,
         email: user.email,
-        phone: user.phone,
         upi_id: user.upi_id,
         user_id: user.user_id,
         isKYCVerified: user.isKYCVerified,
@@ -60,13 +58,12 @@ export class AuthService {
     return null;
   }
 
-  async loginUser(user) {
+  async loginUser(user: any) {
+    // TODO: Do not store credibility_score in JWT, it is a variable
     const payload = {
       id: user.id,
       name: user.name,
       email: user.email,
-      phone: user.phone,
-      college: user.college,
       upi_id: user.upi_id,
       user_id: user.user_id,
       isKYCVerified: user.isKYCVerified,
@@ -75,16 +72,16 @@ export class AuthService {
     return { access_token: this.jwtService.sign(payload) };
   }
 
-  async userForgotPassword(email: string) {
-    const u = await this.userModel.findOne({ email: email });
-    if (!u) {
-      return 0;
-    } else {
-      const pass = generatePassword(String(new Date().valueOf()), email);
-      u.password_hash = await bcrypt.hash(pass, CONFIG.BCRYPT_ROUNDS);
-      await u.save();
-      await sendPass(email, u.name, pass);
-      return 1;
-    }
-  }
+  // async userForgotPassword(email: string) {
+  //   const u = await this.userModel.findOne({ email: email });
+  //   if (!u) {
+  //     return 0;
+  //   } else {
+  //     const pass = generatePassword(String(new Date().valueOf()), email);
+  //     u.password_hash = await bcrypt.hash(pass, CONFIG.BCRYPT_ROUNDS);
+  //     await u.save();
+  //     await sendPass(email, u.name, pass);
+  //     return 1;
+  //   }
+  // }
 }

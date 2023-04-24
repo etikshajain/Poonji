@@ -13,21 +13,15 @@ export class UserJwtStrategy extends PassportStrategy(Strategy, 'user-jwt') {
     });
   }
 
-  async validate(payload: any) {
+  async validate(user: any) {
     return {
-      id: payload.id,
-      name: payload.name,
-      email: payload.email,
-      phone: payload.phone,
-      college: payload.college,
-      rdv_id: payload.rdv_id,
-      referral_points: payload.referral_points,
-      isIITD: payload.isIITD,
-      isIITDFaculty: payload.isIITDFaculty,
-      isIITDStaff: payload.isIITDStaff,
-      isIITDVIP: payload.isIITDVIP,
-      isInvitee: payload.isInvitee,
-      isVerified: payload.isVerified,
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      upi_id: user.upi_id,
+      user_id: user.user_id,
+      isKYCVerified: user.isKYCVerified,
+      credibility_score: user.credibility_score
     };
   }
 }
