@@ -6,12 +6,12 @@ import { User } from './user.schema';
 export class Loan {
   @Prop({ required: true, type: Types.ObjectId, ref: 'User' })
   borrower:User;
-  @Prop({ required: true, type: Types.ObjectId, ref: 'User' })
+  @Prop({ required: false, type: Types.ObjectId, ref: 'User' })
   lender:User;
 
-  @Prop({required: true, unique: false  })
+  @Prop({required: false, unique: false  })
   start_time:Date;
-  @Prop({required: true, unique: false  })
+  @Prop({required: false, unique: false  })
   end_time:Date;
 
   @Prop({required: true, unique: false  })
