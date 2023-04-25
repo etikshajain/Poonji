@@ -13,6 +13,7 @@ export class P2pController {
         return this.p2pService.getLoans(status, borrower, lender);
     }
 
+    
     @Post('requestLoan')
     async requestLoan(@Body() body, @Req() req: Express.Request) {
         const {amount } = body;
@@ -32,20 +33,20 @@ export class P2pController {
     async claimLoan(@Body() body, @Req() req: Express.Request) {
         const { loan_id } = body;
         const id = req['user'].id;
-        return this.p2pService.giveLoan(id, loan_id);
+        return this.p2pService.claimLoan(loan_id);
     }
 
     @Post('returnLoan')
     async returnLoan(@Body() body, @Req() req: Express.Request) {
         const { loan_id } = body;
         const id = req['user'].id;
-        return this.p2pService.returnLoan(id, loan_id);
+        return this.p2pService.returnLoan(loan_id);
     }
 
     @Post('claimReturn')
     async claimReturn(@Body() body, @Req() req: Express.Request) {
         const { loan_id } = body;
         const id = req['user'].id;
-        return this.p2pService.claimReturn(id, loan_id);
+        return this.p2pService.claimReturn(loan_id);
     }
 }

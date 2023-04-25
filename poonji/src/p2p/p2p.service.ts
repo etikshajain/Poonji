@@ -15,12 +15,12 @@ export class P2pService {
         const borrower = this.userModel.findById(user_id);
         if (!borrower) return -1;
         const loan = await this.loanModel.create({
-            borrower: borrower,
+            borrower: (await borrower).id,
             lender: null,
             amount: amount,
             status: 'requested'
         });
-        return loan;
+        return (await loan.populate('borrower')).save();
     }
 
     async giveLoan(user_id: string, loan_id: string) {
@@ -29,22 +29,23 @@ export class P2pService {
 
         if (!loan || !lender) return -1;
 
-        loan.lender = lender;
+        loan.lender = lender.id;
         loan.start_time = new Date();
         loan.status = 'given';
         // todo: track payment
-        return loan.save();
+        return (await loan.populate('borrower lender')).save();
+
     }
 
-    async claimLoan(loan_id) {
+    async claimLoan(loan_id:string) {
         const loan = await this.loanModel.findById(loan_id).populate('borrower lender');
         const upi = loan.borrower.upi_id;
         // todo: transfer money
         loan.status = 'claimed';
-        return loan.save();
+        return (await loan.populate('borrower lender')).save();
     }
 
-    async returnLoan(loan_id) {
+    async returnLoan(loan_id: string) {
         const loan = await this.loanModel.findById(loan_id).populate('borrower lender');
         const upi = loan.borrower.upi_id;
         // todo: transfer money
@@ -62,14 +63,14 @@ export class P2pService {
 
     async getLoans(status: string|null, borrower: string|null, lender: string|null) {
         if (status) {
-            return this.loanModel.find({status: status});
+            return this.loanModel.find({status: status}).populate('borrower lender');
         }
         if (borrower) {
-            return this.loanModel.find({borrower: borrower});
+            return this.loanModel.find({borrower: borrower}).populate('borrower lender');
         }
         if (lender) {
-            return this.loanModel.find({lender: lender});
+            return this.loanModel.find({lender: lender}).populate('borrower lender');
         }
-        return this.loanModel.find({});
+        return this.loanModel.find({}).populate('borrower lender');
     }
 }

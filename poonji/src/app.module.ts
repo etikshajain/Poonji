@@ -14,10 +14,9 @@ import { P2pModule } from './p2p/p2p.module';
     AuthModule,
     P2pModule,
   ],
-  controllers: [AppController, P2pController],
+  controllers: [AppController],
   providers: [
     AppService,
-    P2pService,
   ],
 })
 export class AppModule {}

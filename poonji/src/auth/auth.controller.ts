@@ -37,7 +37,7 @@ export class AuthController {
     if (u === 1) {
       throw new BadRequestException('Email already exists');
     }
-    return 'User sucessfully created';
+    return u;
   }
 
   // @Throttle(5, 60)

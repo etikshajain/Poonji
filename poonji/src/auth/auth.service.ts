@@ -38,7 +38,17 @@ export class AuthService {
       isKYCVerified: false,
       credibility_score: 0
     });
-    return user.save();
+    user.save();
+    const payload = {
+      name: name,
+      email: email,
+      phone: phone,
+      upi_id: upi_id,
+      user_id: user_id,
+      isKYCVerified: false,
+      credibility_score: 0
+    }
+    return { access_token: this.jwtService.sign(payload) }
   }
 
   async validateEmailUser(email: string, password: string): Promise<any> {
