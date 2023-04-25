@@ -111,11 +111,11 @@ const DEMO_VARIANT_COLORS: ProductVariant[] = [
 export const PRODUCTS: Product[] = [
   {
     id: 1,
-    name: "Rey Nylon Backpack",
-    description: "Brown cockroach wings",
-    price: 74,
+    name: "Ramesh Kumar",
+    description: "amul chai",
+    price: 10,
     image: productImgs[16],
-    category: "Category 1",
+    category: "Requested",
     tags: ["tag1", "tag2"],
     link: "/product-detail/",
     variants: DEMO_VARIANTS,

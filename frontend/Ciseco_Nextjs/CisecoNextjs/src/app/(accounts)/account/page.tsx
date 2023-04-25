@@ -5,6 +5,7 @@ import Input from "@/shared/Input/Input";
 import Select from "@/shared/Select/Select";
 import Textarea from "@/shared/Textarea/Textarea";
 import { avatarImgs } from "@/contains/fakeData";
+import ButtonSecondary from "@/shared/Button/ButtonSecondary";
 import Image from "next/image";
 
 const AccountPage = () => {
@@ -120,6 +121,24 @@ const AccountPage = () => {
                 </span>
                 <Input className="!rounded-l-none" defaultValue="003 888 232" />
               </div>
+            </div>
+            {/* ---- */}
+            <div>
+              <Label>credibility score</Label>
+              {/* <div className="mt-1.5 flex">
+                <span className="inline-flex items-center px-2.5 rounded-l-2xl border border-r-0 border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400 text-sm">
+                  <i className="text-2xl las la-phone-volume"></i>
+                </span>
+                <Input className="!rounded-l-none" defaultValue="200-1000" />
+              </div> */}
+              <div className="mt-3 sm:mt-0">
+            <ButtonSecondary
+              sizeClass="py-2.5 px-4 sm:px-6"
+              fontSize="text-sm font-medium"
+            >
+              256
+            </ButtonSecondary>
+          </div>
             </div>
             {/* ---- */}
             <div>
